@@ -8,6 +8,7 @@ Ground truth: conditional 2D Gaussians N(μ(x), Σ(x)) over x ∈ [0,1]².
 
 Strategies:
   - Transport kernel AL (Eq. 21–22 from the paper)
+  - Wasserstein-projected transport kernel AL
   - Mean-only NTK AL (BMDAL baseline)
   - Random
 
@@ -23,6 +24,11 @@ from matplotlib.patches import Ellipse
 from dataclasses import dataclass
 import os, yaml
 from tqdm import tqdm
+
+if __package__:
+    from .gaussian_projection import compute_projected_transport_kernel
+else:
+    from gaussian_projection import compute_projected_transport_kernel
 
 # ════════════════════════════════════════════════════════════════
 # CONFIG
@@ -285,12 +291,12 @@ def kl_loss(mu_pred, L_pred, mu_true, L_true):
     return kl.mean()
 
 
-def train_model(model, x_train, mu_train, L_train, config: ExperimentConfig):
+def train_model(model, x_train, mu_train, L_train, config: ExperimentConfig, *, verbose=True):
     """Train from scratch. Returns loss curve."""
     model.reset_weights()
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
     losses = []
-    for step in tqdm(range(config.n_train_steps), desc="Training", leave=False):
+    for step in tqdm(range(config.n_train_steps), desc="Training", leave=False, disable=not verbose):
         optimizer.zero_grad()
         mu_pred, L_pred = model(x_train)
         loss = kl_loss(mu_pred, L_pred, mu_train, L_train)
@@ -483,12 +489,11 @@ def evaluate(model, x_test, mu_test, L_test):
 # EXPERIMENT LOOP
 # ════════════════════════════════════════════════════════════════
 
-def run_experiment(strategy: str, seed: int, config: ExperimentConfig):
+def run_experiment(strategy: str, seed: int, config: ExperimentConfig, *, verbose=True):
     """
     Full AL loop for one strategy and seed.
 
-    strategy: 'transport', 'mean', or 'random'
-    Returns: {round_idx: {'total', 'mean', 'covariance'}}
+    Returns: {round_idx: {'total', 'mean', 'covariance'}} and the queried indices.
     """
     device = get_device(config)
     torch.manual_seed(seed)
@@ -506,31 +511,39 @@ def run_experiment(strategy: str, seed: int, config: ExperimentConfig):
     n_eval_rounds = config.n_rounds + 1  # evaluate before first acquisition + after each
 
     for r in range(n_eval_rounds):
-        print(f"Round {r}/{config.n_rounds} - Strategy: {strategy} - Seed: {seed}")
+        if verbose:
+            print(f"Round {r}/{config.n_rounds} - Strategy: {strategy} - Seed: {seed}")
         # Train
         x_tr = x_pool[train_indices]
         mu_tr = mu_pool[train_indices]
         L_tr = L_pool[train_indices]
-        train_model(model, x_tr, mu_tr, L_tr, config)
+        train_model(model, x_tr, mu_tr, L_tr, config, verbose=verbose)
 
         # Evaluate
         results[r] = evaluate(model, x_test, mu_test, L_test)
-        print(f"  [{strategy}] seed={seed} round={r} n_train={len(train_indices)} "
-              f"W2²={results[r]['total']:.4f} "
-              f"(mean={results[r]['mean']:.4f}, cov={results[r]['covariance']:.4f})")
+        if verbose:
+            print(f"  [{strategy}] seed={seed} round={r} n_train={len(train_indices)} "
+                  f"W2²={results[r]['total']:.4f} "
+                  f"(mean={results[r]['mean']:.4f}, cov={results[r]['covariance']:.4f})")
 
         # Acquire (except after last round)
         if r < config.n_rounds:
             if strategy == 'random':
                 remaining = list(set(range(n_pool)) - set(train_indices))
                 rng = np.random.RandomState(seed * 100 + r)
-                new = list(rng.choice(remaining, size=config.batch_size, replace=False))
+                new = rng.choice(remaining, size=config.batch_size, replace=False).tolist()
             else:
                 # Compute kernel
                 if strategy == 'transport':
                     K = compute_transport_kernel(model, x_pool)
+                elif strategy in {'projected', 'projected_canonical'}:
+                    K = compute_projected_transport_kernel(
+                        model, x_pool, canonical=strategy == 'projected_canonical',
+                    )
                 elif strategy == 'mean':
                     K = compute_mean_kernel(model, x_pool)
+                else:
+                    raise ValueError(f"Unknown acquisition strategy: {strategy}")
 
                 new = select_batch_min_total_var(
                     K,
@@ -549,8 +562,10 @@ def run_experiment(strategy: str, seed: int, config: ExperimentConfig):
 # PLOTTING
 # ════════════════════════════════════════════════════════════════
 
-COLORS = {'random': 'gray', 'mean': 'C3', 'transport': 'C0'}
-LABELS = {'random': 'Random', 'mean': 'Mean-only NTK', 'transport': 'Transport Kernel'}
+COLORS = {'random': 'gray', 'mean': 'C3', 'transport': 'C0',
+          'projected': 'C2', 'projected_canonical': 'C4'}
+LABELS = {'random': 'Random', 'mean': 'Mean-only NTK', 'transport': 'Transport Kernel',
+          'projected': 'Projected tNTK', 'projected_canonical': 'Canonical projected tNTK'}
 
 
 def plot_ground_truth(config: ExperimentConfig, save_path=None, mean_scaling=1.0, std_scaling=1.0):

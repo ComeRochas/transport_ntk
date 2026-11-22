@@ -90,6 +90,9 @@ command below is run from this directory.
 The 2D-Gaussian study is separate and self-contained:
 `train/al_2d_gaussian.py` with `train/experiment.py`.
 
+The [Wasserstein projection experiment](docs/gaussian_projection.md) compares
+two projected kernels with the original 2D-Gaussian baselines.
+
 ## Citation
 
 Please cite the following work if you use this repository.

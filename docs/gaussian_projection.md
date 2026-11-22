@@ -26,8 +26,26 @@ python eval/gaussian_projection_summary.py \
 
 The reproduction targets the implementation of Figure 2. The released generator uses $2\exp(-6x_1)[x_2,1-x_2]$ for the mean, while Equation (151) places the $x_2$-dependent factors inside the exponentials. The released selector uses `lam = 0.001` in conditioning on labeled points and an additive `1` in hypothetical within-batch updates. Both choices are shared across the kernel-based arms. [Upstream benchmark](https://github.com/biologicalML/transport_ntk/blob/fcd580d079b99dd3ed97e76b1f2753af3afd3463/train/experiment.py)
 
+## Results
+
+The 30-seed run took 342 seconds on an arm64 CPU with eight workers and one PyTorch intra-op thread per worker. It used Python 3.13.2, PyTorch 2.9.1, NumPy 2.4.6 and Matplotlib 3.10.8. All three baselines were rerun in this environment. The final error is measured after 15 labeled conditions. The last column is the mean change from the initial error across the five acquisition rounds, in unscaled units.
+
+| Acquisition | Final test $W_2^2$ | Final mean term | Final covariance term | Mean change from initial |
+| --- | ---: | ---: | ---: | ---: |
+| Transport NTK | 0.13818 | 0.01511 | 0.12307 | −0.43720 |
+| Projected NTK | 0.13582 | 0.01538 | 0.12044 | −0.43251 |
+| Canonical projected NTK | 0.13047 | 0.01474 | 0.11573 | −0.43402 |
+| Mean NTK | 0.20772 | 0.02151 | 0.18621 | −0.37136 |
+| Random | 0.15538 | 0.02040 | 0.13498 | −0.36198 |
+
+The paired final contrast for projected minus transport was −0.00237 (95% bootstrap CI [−0.01692, +0.01276]). For the exploratory canonical variant it was −0.00772 (95% CI [−0.01955, +0.00411]). Both intervals include zero. Transport also had a slightly larger mean reduction over rounds 1–5. The first batches from the projected and canonical kernels shared 15% and 13% of the original tNTK's choices, respectively. Acquisition changes therefore appeared early, with uncertain effects on the final test error.
+
+The archived original run had final means of 0.14082 for tNTK, 0.21290 for mean NTK and 0.15554 for random. Those numbers provide context for the rerun. The paired intervals above use only the rerun. [Archived Figure 2 results](https://github.com/biologicalML/transport_ntk/tree/fcd580d079b99dd3ed97e76b1f2753af3afd3463/results/gaussian_2d/both_complex_b2)
+
+The [per-seed data](../results/gaussian_2d/wasserstein_projection_b2/metrics.csv) include the selected indices for each round. The [statistical summary](../results/gaussian_2d/wasserstein_projection_b2/summary.json) includes the endpoint contrasts and uncertainty estimates. Bands in the [learning curves](../results/gaussian_2d/wasserstein_projection_b2/learning_curves.png) show one standard error across seeds.
+
 ## Follow-up experiments
 
-1. **Rotation sensitivity.** Introduce a condition-dependent right rotation of the factor with a separate parameter and a predeclared amplitude sweep. The output law is identical for every amplitude. Check projected Gram and first-batch invariance, then measure additional label cost or loss for the original kernel as the nuisance gradient grows. A one-query version is covered by the tests.
-2. **Acquisition scale and Gaussian dimension.** Match mean kernel diagonals and use one common regularization for observed and hypothetical updates as separate ablations. Compare paired final $W_2^2$, Bures covariance loss and runtime. Then reconstruct the appendix E.2 experiment at $d=5$, with 15 initial conditions and five batches of four, before increasing dimension. Record how much local metric energy the projection removes and whether that predicts a gain.
-3. **Non-affine transport.** On the synthetic radial-flow experiment, approximate the $L^2(\mu_x)$ gradient projection by regressing endpoint transport Jacobians onto gradients of a fixed potential basis. Validate the approximation on known affine fields first. Use the paper's Sinkhorn metric and report fitting and acquisition costs. [Paper, appendices B.3.2, D.5 and E.2](https://arxiv.org/pdf/2610.35652)
+1. **Rotation sensitivity.** Introduce a condition-dependent right rotation of the factor with a separate parameter and amplitudes 0, 1, 4 and 16. At the reference value of the parameter, the rotation is the identity at every condition. The output law is identical for all values of the rotation parameter. Check projected Gram and first-batch invariance, then measure the change in the original kernel's acquisition choices and test loss as the rotation gradient grows. A one-query version is covered by the tests.
+2. **Acquisition scale and Gaussian dimension.** Match mean kernel diagonals and use one common regularization for observed and hypothetical updates as separate ablations. Compare paired final $W_2^2$, Bures covariance loss and runtime. Then reconstruct Appendix E.2 at $d=5$, with 15 initial conditions and five batches of four. Time a 10-seed CPU pilot before expanding to the paper's 50 seeds. Its published final tNTK baseline is $0.1164 \pm 0.0014$. Record how much local metric energy the projection removes and whether that predicts a gain.
+3. **Non-affine transport.** On the synthetic radial-flow experiment, approximate the $L^2(\mu_x)$ gradient projection by regressing endpoint transport Jacobians onto gradients of a fixed potential basis. Measure approximation error on known affine fields first. Use the paper's Sinkhorn metric and report fitting and acquisition costs. The published flow-matching campaign uses GPUs. [Paper, appendices B.3.2, D.5 and E.2](https://arxiv.org/pdf/2610.35652)

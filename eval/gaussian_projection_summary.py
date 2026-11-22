@@ -66,7 +66,7 @@ def write_metrics(path, budgets, curves, indices):
     columns = ("seed", "round", "arm", "budget", "w2_sq_total", "w2_sq_mean",
                "w2_sq_covariance", "acquired_indices")
     with path.open("w", encoding="utf-8", newline="") as out:
-        writer = csv.writer(out)
+        writer = csv.writer(out, lineterminator="\n")
         writer.writerow(columns)
         for arm, curve in curves.items():
             for seed, (run, selected) in enumerate(zip(curve, indices[arm])):

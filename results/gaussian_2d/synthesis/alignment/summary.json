@@ -1,0 +1,1285 @@
+{
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "trajectory": "original tNTK, with shared round zero",
+  "estimand": "Mean seed-level Frobenius cosine over checkpoint and pool points",
+  "bootstrap": "Percentile 95% interval, 10,000 paired seed resamples",
+  "rows": [
+    {
+      "round": "all",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 18816,
+      "raw_fisher_cosine": 0.9282607396853803,
+      "projected_fisher_cosine": 0.9196403639434922,
+      "raw_minus_projected": 0.008620375741888366,
+      "mean_condition_number": 20.536890077672098,
+      "raw_minus_projected_ci95": [
+        0.007491975046011051,
+        0.009738031193520387
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 18816,
+      "raw_fisher_cosine": 0.8463809636295296,
+      "projected_fisher_cosine": 0.8463809636295296,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 20.536890077672098,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 18816,
+      "raw_fisher_cosine": 0.8594251202166181,
+      "projected_fisher_cosine": 0.8539687878107394,
+      "raw_minus_projected": 0.005456332405879173,
+      "mean_condition_number": 20.536890077672098,
+      "raw_minus_projected_ci95": [
+        0.0037595793186711844,
+        0.00719145732530045
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 5067,
+      "raw_fisher_cosine": 0.9976888488421153,
+      "projected_fisher_cosine": 0.9983285788924489,
+      "raw_minus_projected": -0.0006397300503338263,
+      "mean_condition_number": 1.4245853899786785,
+      "raw_minus_projected_ci95": [
+        -0.0007230982994039818,
+        -0.0005685079928542205
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 5067,
+      "raw_fisher_cosine": 0.9828486630593627,
+      "projected_fisher_cosine": 0.9828486630593627,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.4245853899786785,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 5067,
+      "raw_fisher_cosine": 0.9884689079236566,
+      "projected_fisher_cosine": 0.9487839845159458,
+      "raw_minus_projected": 0.03968492340771092,
+      "mean_condition_number": 1.4245853899786785,
+      "raw_minus_projected_ci95": [
+        0.03741686015962784,
+        0.04173426790629043
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 4362,
+      "raw_fisher_cosine": 0.9877686004307118,
+      "projected_fisher_cosine": 0.9826627809016297,
+      "raw_minus_projected": 0.00510581952908235,
+      "mean_condition_number": 3.1374418719199024,
+      "raw_minus_projected_ci95": [
+        0.004709245450379193,
+        0.005488617722575821
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 4362,
+      "raw_fisher_cosine": 0.8940715885616222,
+      "projected_fisher_cosine": 0.8940715885616222,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.1374418719199024,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 4362,
+      "raw_fisher_cosine": 0.9168404314367347,
+      "projected_fisher_cosine": 0.907467356455832,
+      "raw_minus_projected": 0.009373074980902556,
+      "mean_condition_number": 3.1374418719199024,
+      "raw_minus_projected_ci95": [
+        0.007856495030752237,
+        0.0109875488486923
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 9387,
+      "raw_fisher_cosine": 0.8648131309138013,
+      "projected_fisher_cosine": 0.8494458037129431,
+      "raw_minus_projected": 0.015367327200858183,
+      "mean_condition_number": 38.70024785218678,
+      "raw_minus_projected_ci95": [
+        0.012956210728585184,
+        0.01778324964499275
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 9387,
+      "raw_fisher_cosine": 0.7509294625588185,
+      "projected_fisher_cosine": 0.7509294625588185,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 38.70024785218678,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "all",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 9387,
+      "raw_fisher_cosine": 0.7642430566563128,
+      "projected_fisher_cosine": 0.7790664932102286,
+      "raw_minus_projected": -0.014823436553915638,
+      "mean_condition_number": 38.70024785218678,
+      "raw_minus_projected_ci95": [
+        -0.017202020737016557,
+        -0.012278799546403598
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9472897243242169,
+      "projected_fisher_cosine": 0.9418720713008766,
+      "raw_minus_projected": 0.005417653023339979,
+      "mean_condition_number": 21.907129329366796,
+      "raw_minus_projected_ci95": [
+        0.0039638736031553864,
+        0.007118519644604659
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8290214219058705,
+      "projected_fisher_cosine": 0.8290214219058705,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 21.907129329366796,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8549991569236572,
+      "projected_fisher_cosine": 0.8498450227824503,
+      "raw_minus_projected": 0.005154134141206942,
+      "mean_condition_number": 21.907129329366796,
+      "raw_minus_projected_ci95": [
+        0.0007017117594436058,
+        0.009452051408492331
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 554,
+      "raw_fisher_cosine": 0.9973537182405128,
+      "projected_fisher_cosine": 0.9981048992141276,
+      "raw_minus_projected": -0.0007511809736149241,
+      "mean_condition_number": 1.5082460524483903,
+      "raw_minus_projected_ci95": [
+        -0.000915134360193418,
+        -0.0005891316594186894
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 554,
+      "raw_fisher_cosine": 0.9779050723182376,
+      "projected_fisher_cosine": 0.9779050723182376,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.5082460524483903,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 554,
+      "raw_fisher_cosine": 0.9812169051210929,
+      "projected_fisher_cosine": 0.9504121855803321,
+      "raw_minus_projected": 0.03080471954076074,
+      "mean_condition_number": 1.5082460524483903,
+      "raw_minus_projected_ci95": [
+        0.02612185906157769,
+        0.03528075808384146
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 859,
+      "raw_fisher_cosine": 0.9922654670913622,
+      "projected_fisher_cosine": 0.9870354889110959,
+      "raw_minus_projected": 0.005229978180266232,
+      "mean_condition_number": 3.1285272140722196,
+      "raw_minus_projected_ci95": [
+        0.003936710119187161,
+        0.006508818396058799
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 859,
+      "raw_fisher_cosine": 0.8942032826822272,
+      "projected_fisher_cosine": 0.8942032826822272,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.1285272140722196,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 859,
+      "raw_fisher_cosine": 0.9035526945884857,
+      "projected_fisher_cosine": 0.8987673523133274,
+      "raw_minus_projected": 0.004785342275158309,
+      "mean_condition_number": 3.1285272140722196,
+      "raw_minus_projected_ci95": [
+        0.0006645577283948993,
+        0.00935686543353639
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1723,
+      "raw_fisher_cosine": 0.9082395558671345,
+      "projected_fisher_cosine": 0.9012715419299983,
+      "raw_minus_projected": 0.00696801393713611,
+      "mean_condition_number": 38.369425206499706,
+      "raw_minus_projected_ci95": [
+        0.005410349197284158,
+        0.008975326381275128
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1723,
+      "raw_fisher_cosine": 0.7487147308715707,
+      "projected_fisher_cosine": 0.7487147308715707,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 38.369425206499706,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "0",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1723,
+      "raw_fisher_cosine": 0.7921090877817423,
+      "projected_fisher_cosine": 0.7934042461746331,
+      "raw_minus_projected": -0.0012951583928908772,
+      "mean_condition_number": 38.369425206499706,
+      "raw_minus_projected_ci95": [
+        -0.005690017887021569,
+        0.002337309432695253
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9210797263899684,
+      "projected_fisher_cosine": 0.9041932038958977,
+      "raw_minus_projected": 0.016886522494070695,
+      "mean_condition_number": 15.860358968435786,
+      "raw_minus_projected_ci95": [
+        0.013805907575885184,
+        0.020568783282781024
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8305150071969104,
+      "projected_fisher_cosine": 0.8305150071969104,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 15.860358968435786,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8295957453582878,
+      "projected_fisher_cosine": 0.8420461892533846,
+      "raw_minus_projected": -0.012450443895096773,
+      "mean_condition_number": 15.860358968435786,
+      "raw_minus_projected_ci95": [
+        -0.018034077221056176,
+        -0.006958582824869359
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 470,
+      "raw_fisher_cosine": 0.9975943650091819,
+      "projected_fisher_cosine": 0.9981952905820284,
+      "raw_minus_projected": -0.0006009255728464408,
+      "mean_condition_number": 1.4842861200576958,
+      "raw_minus_projected_ci95": [
+        -0.0008043031830886961,
+        -0.0003913097156547922
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 470,
+      "raw_fisher_cosine": 0.9793711966166099,
+      "projected_fisher_cosine": 0.9793711966166099,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.4842861200576958,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 470,
+      "raw_fisher_cosine": 0.984842232557818,
+      "projected_fisher_cosine": 0.9437403759954225,
+      "raw_minus_projected": 0.04110185656239547,
+      "mean_condition_number": 1.4842861200576958,
+      "raw_minus_projected_ci95": [
+        0.03854357501711673,
+        0.04342943599423764
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 905,
+      "raw_fisher_cosine": 0.98686085432933,
+      "projected_fisher_cosine": 0.9800525949339206,
+      "raw_minus_projected": 0.006808259395409629,
+      "mean_condition_number": 3.258811804194943,
+      "raw_minus_projected_ci95": [
+        0.0061170969703993865,
+        0.007535149536743609
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 905,
+      "raw_fisher_cosine": 0.8889421835089316,
+      "projected_fisher_cosine": 0.8889421835089316,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.258811804194943,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 905,
+      "raw_fisher_cosine": 0.8996107278308556,
+      "projected_fisher_cosine": 0.8999132386186572,
+      "raw_minus_projected": -0.0003025107878015848,
+      "mean_condition_number": 3.258811804194943,
+      "raw_minus_projected_ci95": [
+        -0.004309907816851639,
+        0.0037004581590368503
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1761,
+      "raw_fisher_cosine": 0.8688393677713196,
+      "projected_fisher_cosine": 0.8417734568996653,
+      "raw_minus_projected": 0.027065910871654296,
+      "mean_condition_number": 26.019616915844633,
+      "raw_minus_projected_ci95": [
+        0.021383136543828733,
+        0.03298042845707428
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1761,
+      "raw_fisher_cosine": 0.7609654339932606,
+      "projected_fisher_cosine": 0.7609654339932606,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 26.019616915844633,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "1",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1761,
+      "raw_fisher_cosine": 0.7545164188679889,
+      "projected_fisher_cosine": 0.7870092397034401,
+      "raw_minus_projected": -0.03249282083545123,
+      "mean_condition_number": 26.019616915844633,
+      "raw_minus_projected_ci95": [
+        -0.04001159684956281,
+        -0.02495002490568732
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9311268230660701,
+      "projected_fisher_cosine": 0.9216212890139992,
+      "raw_minus_projected": 0.00950553405207074,
+      "mean_condition_number": 15.940321911779407,
+      "raw_minus_projected_ci95": [
+        0.007477130468994539,
+        0.01149876215097491
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8600898734847703,
+      "projected_fisher_cosine": 0.8600898734847703,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 15.940321911779407,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8700803610995401,
+      "projected_fisher_cosine": 0.8621802860369431,
+      "raw_minus_projected": 0.007900075062597035,
+      "mean_condition_number": 15.940321911779407,
+      "raw_minus_projected_ci95": [
+        0.004226322828813664,
+        0.01190614680496803
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1054,
+      "raw_fisher_cosine": 0.9978155068159515,
+      "projected_fisher_cosine": 0.9984612779195037,
+      "raw_minus_projected": -0.0006457711035521303,
+      "mean_condition_number": 1.405319657723659,
+      "raw_minus_projected_ci95": [
+        -0.0008980062432497696,
+        -0.00044817695769158294
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1054,
+      "raw_fisher_cosine": 0.9840113028069629,
+      "projected_fisher_cosine": 0.9840113028069629,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.405319657723659,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1054,
+      "raw_fisher_cosine": 0.988255030256177,
+      "projected_fisher_cosine": 0.950615295730621,
+      "raw_minus_projected": 0.03763973452555594,
+      "mean_condition_number": 1.405319657723659,
+      "raw_minus_projected_ci95": [
+        0.03280514936783322,
+        0.04244122528843376
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 647,
+      "raw_fisher_cosine": 0.9884064105682472,
+      "projected_fisher_cosine": 0.9834377172866708,
+      "raw_minus_projected": 0.004968693281576311,
+      "mean_condition_number": 3.1195500336781254,
+      "raw_minus_projected_ci95": [
+        0.004365665167838935,
+        0.005654700698239021
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 647,
+      "raw_fisher_cosine": 0.8949530446259604,
+      "projected_fisher_cosine": 0.8949530446259604,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.1195500336781254,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 647,
+      "raw_fisher_cosine": 0.914955148430541,
+      "projected_fisher_cosine": 0.9041637227134744,
+      "raw_minus_projected": 0.010791425717066571,
+      "mean_condition_number": 3.1195500336781254,
+      "raw_minus_projected_ci95": [
+        0.008061922086489051,
+        0.013535268092552993
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1435,
+      "raw_fisher_cosine": 0.8635054183158304,
+      "projected_fisher_cosine": 0.8442339891586268,
+      "raw_minus_projected": 0.01927142915720345,
+      "mean_condition_number": 31.181631617098418,
+      "raw_minus_projected_ci95": [
+        0.014459979748420696,
+        0.02435511488536968
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1435,
+      "raw_fisher_cosine": 0.7546768699056671,
+      "projected_fisher_cosine": 0.7546768699056671,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 31.181631617098418,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "2",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1435,
+      "raw_fisher_cosine": 0.768392658956008,
+      "projected_fisher_cosine": 0.783049806420776,
+      "raw_minus_projected": -0.014657147464768068,
+      "mean_condition_number": 31.181631617098418,
+      "raw_minus_projected_ci95": [
+        -0.021479124574276965,
+        -0.008198508825615541
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9214421197705265,
+      "projected_fisher_cosine": 0.9125888949959243,
+      "raw_minus_projected": 0.008853224774602245,
+      "mean_condition_number": 25.5526877220676,
+      "raw_minus_projected_ci95": [
+        0.0072387619298599475,
+        0.010525803637227108
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8496579808789284,
+      "projected_fisher_cosine": 0.8496579808789284,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 25.5526877220676,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8585994288421324,
+      "projected_fisher_cosine": 0.8518902101386444,
+      "raw_minus_projected": 0.00670921870348774,
+      "mean_condition_number": 25.5526877220676,
+      "raw_minus_projected_ci95": [
+        0.004105481572879255,
+        0.009301949493448761
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 930,
+      "raw_fisher_cosine": 0.9974609540173978,
+      "projected_fisher_cosine": 0.9980708804597911,
+      "raw_minus_projected": -0.0006099264423932527,
+      "mean_condition_number": 1.4259920276243752,
+      "raw_minus_projected_ci95": [
+        -0.0007787633763856914,
+        -0.00045175508391352476
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 930,
+      "raw_fisher_cosine": 0.9827768993391566,
+      "projected_fisher_cosine": 0.9827768993391566,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.4259920276243752,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 930,
+      "raw_fisher_cosine": 0.9890382681656371,
+      "projected_fisher_cosine": 0.9501400271161096,
+      "raw_minus_projected": 0.03889824104952755,
+      "mean_condition_number": 1.4259920276243752,
+      "raw_minus_projected_ci95": [
+        0.03521706978735963,
+        0.042095657302286864
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 672,
+      "raw_fisher_cosine": 0.9862429924449726,
+      "projected_fisher_cosine": 0.9820696750026175,
+      "raw_minus_projected": 0.0041733174423551405,
+      "mean_condition_number": 3.0899467186893537,
+      "raw_minus_projected_ci95": [
+        0.0035614296422080507,
+        0.004671035450422174
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 672,
+      "raw_fisher_cosine": 0.8962896474068687,
+      "projected_fisher_cosine": 0.8962896474068687,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.0899467186893537,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 672,
+      "raw_fisher_cosine": 0.927346507847462,
+      "projected_fisher_cosine": 0.9135487380970193,
+      "raw_minus_projected": 0.013797769750442744,
+      "mean_condition_number": 3.0899467186893537,
+      "raw_minus_projected_ci95": [
+        0.011125271062932391,
+        0.016126091668338952
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1534,
+      "raw_fisher_cosine": 0.8480469968729777,
+      "projected_fisher_cosine": 0.83105330126757,
+      "raw_minus_projected": 0.016993695605407692,
+      "mean_condition_number": 49.055494652604324,
+      "raw_minus_projected_ci95": [
+        0.013122194094959447,
+        0.020900425630979713
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1534,
+      "raw_fisher_cosine": 0.7486352588378844,
+      "projected_fisher_cosine": 0.7486352588378844,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 49.055494652604324,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "3",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1534,
+      "raw_fisher_cosine": 0.7503352751663315,
+      "projected_fisher_cosine": 0.7663966548215837,
+      "raw_minus_projected": -0.016061379655252225,
+      "mean_condition_number": 49.055494652604324,
+      "raw_minus_projected_ci95": [
+        -0.01995156451815531,
+        -0.012560523996712668
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9232074003062074,
+      "projected_fisher_cosine": 0.9168822922495947,
+      "raw_minus_projected": 0.006325108056612316,
+      "mean_condition_number": 21.97299828434561,
+      "raw_minus_projected_ci95": [
+        0.0048020005429718635,
+        0.007979291875395743
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8537889414531706,
+      "projected_fisher_cosine": 0.8537889414531706,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 21.97299828434561,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.869155867169846,
+      "projected_fisher_cosine": 0.8574564383599543,
+      "raw_minus_projected": 0.01169942880989171,
+      "mean_condition_number": 21.97299828434561,
+      "raw_minus_projected_ci95": [
+        0.009134721303032505,
+        0.014572284388957472
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1015,
+      "raw_fisher_cosine": 0.997744316369602,
+      "projected_fisher_cosine": 0.9983635565112957,
+      "raw_minus_projected": -0.0006192401416937994,
+      "mean_condition_number": 1.4200334676390116,
+      "raw_minus_projected_ci95": [
+        -0.0008330464368251687,
+        -0.0004367413380607046
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1015,
+      "raw_fisher_cosine": 0.9831391840358124,
+      "projected_fisher_cosine": 0.9831391840358124,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.4200334676390116,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1015,
+      "raw_fisher_cosine": 0.9907674069066862,
+      "projected_fisher_cosine": 0.9467591158243223,
+      "raw_minus_projected": 0.04400829108236406,
+      "mean_condition_number": 1.4200334676390116,
+      "raw_minus_projected_ci95": [
+        0.041383931584365555,
+        0.046480543824108135
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 654,
+      "raw_fisher_cosine": 0.9869241439653722,
+      "projected_fisher_cosine": 0.9831785733067103,
+      "raw_minus_projected": 0.0037455706586618683,
+      "mean_condition_number": 3.0165198927410546,
+      "raw_minus_projected_ci95": [
+        0.003016543778486317,
+        0.0044561592736280424
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 654,
+      "raw_fisher_cosine": 0.8989719448099688,
+      "projected_fisher_cosine": 0.8989719448099688,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.0165198927410546,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 654,
+      "raw_fisher_cosine": 0.9358637423474665,
+      "projected_fisher_cosine": 0.9179424698945078,
+      "raw_minus_projected": 0.01792127245295877,
+      "mean_condition_number": 3.0165198927410546,
+      "raw_minus_projected_ci95": [
+        0.016561581400080384,
+        0.019285156362729376
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.8439520610409529,
+      "projected_fisher_cosine": 0.831659938017004,
+      "raw_minus_projected": 0.01229212302394887,
+      "mean_condition_number": 44.21806625782426,
+      "raw_minus_projected_ci95": [
+        0.008977185294999468,
+        0.01599338109580917
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.7442904638713758,
+      "projected_fisher_cosine": 0.7442904638713758,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 44.21806625782426,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "4",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.7566109821219115,
+      "projected_fisher_cosine": 0.7698829652447893,
+      "raw_minus_projected": -0.013271983122877702,
+      "mean_condition_number": 44.21806625782426,
+      "raw_minus_projected_ci95": [
+        -0.01802066937166222,
+        -0.00870925215385796
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "all",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.9254186442552947,
+      "projected_fisher_cosine": 0.9206844322046603,
+      "raw_minus_projected": 0.004734212050634215,
+      "mean_condition_number": 21.987844250037377,
+      "raw_minus_projected_ci95": [
+        0.003997466825945561,
+        0.00558696577953881
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "all",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8552125568575285,
+      "projected_fisher_cosine": 0.8552125568575285,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 21.987844250037377,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "all",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 3136,
+      "raw_fisher_cosine": 0.8741201619062469,
+      "projected_fisher_cosine": 0.8603945802930583,
+      "raw_minus_projected": 0.013725581613188391,
+      "mean_condition_number": 21.987844250037377,
+      "raw_minus_projected_ci95": [
+        0.009946163500985102,
+        0.017277476355738036
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_1_to_2",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1044,
+      "raw_fisher_cosine": 0.9977228457299209,
+      "projected_fisher_cosine": 0.9983589479416348,
+      "raw_minus_projected": -0.0006361022117139152,
+      "mean_condition_number": 1.4004707162163914,
+      "raw_minus_projected_ci95": [
+        -0.0007882851576548287,
+        -0.0004909436982975108
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_1_to_2",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1044,
+      "raw_fisher_cosine": 0.9840978536479528,
+      "projected_fisher_cosine": 0.9840978536479528,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 1.4004707162163914,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_1_to_2",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1044,
+      "raw_fisher_cosine": 0.990501453237725,
+      "projected_fisher_cosine": 0.948462094120111,
+      "raw_minus_projected": 0.0420393591176139,
+      "mean_condition_number": 1.4004707162163914,
+      "raw_minus_projected_ci95": [
+        0.03896654290765172,
+        0.044784302440573034
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_2_to_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 625,
+      "raw_fisher_cosine": 0.9855273406981657,
+      "projected_fisher_cosine": 0.9812343425734443,
+      "raw_minus_projected": 0.004292998124721366,
+      "mean_condition_number": 3.145455213138659,
+      "raw_minus_projected_ci95": [
+        0.0036696864900328595,
+        0.00495791696078282
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_2_to_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 625,
+      "raw_fisher_cosine": 0.894190648550304,
+      "projected_fisher_cosine": 0.894190648550304,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 3.145455213138659,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_2_to_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 625,
+      "raw_fisher_cosine": 0.9310212532323334,
+      "projected_fisher_cosine": 0.91465620949827,
+      "raw_minus_projected": 0.01636504373406346,
+      "mean_condition_number": 3.145455213138659,
+      "raw_minus_projected_ci95": [
+        0.01367855258297052,
+        0.01895579961744397
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_at_least_5",
+      "block": "shape",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.8473303326031691,
+      "projected_fisher_cosine": 0.8386329067851289,
+      "raw_minus_projected": 0.008697425818040177,
+      "mean_condition_number": 44.52969232137529,
+      "raw_minus_projected_ci95": [
+        0.00752819459308399,
+        0.009923247155075615
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_at_least_5",
+      "block": "mean",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.7463791843959195,
+      "projected_fisher_cosine": 0.7463791843959195,
+      "raw_minus_projected": 0.0,
+      "mean_condition_number": 44.52969232137529,
+      "raw_minus_projected_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "round": "5",
+      "stratum": "condition_at_least_5",
+      "block": "full",
+      "n_seeds": 16,
+      "n_points": 1467,
+      "raw_fisher_cosine": 0.768019974584639,
+      "projected_fisher_cosine": 0.7751686523435877,
+      "raw_minus_projected": -0.007148677758948545,
+      "mean_condition_number": 44.52969232137529,
+      "raw_minus_projected_ci95": [
+        -0.010258469910083577,
+        -0.004346895880419489
+      ]
+    }
+  ]
+}

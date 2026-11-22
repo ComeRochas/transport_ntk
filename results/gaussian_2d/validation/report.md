@@ -1,5 +1,7 @@
 # Scientific validation of the Wasserstein-projected transport NTK
 
+The [scientific synthesis](../synthesis/report.md) documents a numerical issue in the historical float32 selector and contains the corrected results for these 16 seeds. This report records the original campaign.
+
 This study separates a change of latent representation, the geometric correction in the natural benchmark, and the effect of the Gaussian-process selector on test error. All training uses the released 2D Gaussian task. The preceding 30-seed comparison is context for this follow-up. Its seeds overlap with this campaign, so the new active-learning contrasts are sensitivity estimates on the same benchmark. [Paper, Lemma 2 and Appendix B.3.2](https://arxiv.org/pdf/2610.35652) · [Released code](https://github.com/biologicalML/transport_ntk/tree/fcd580d079b99dd3ed97e76b1f2753af3afd3463)
 
 ## Construction and audit
@@ -90,7 +92,7 @@ From the repository root, use a CPU environment with PyTorch, NumPy, Matplotlib,
 ~~~bash
 python -m unittest train.test_gaussian_projection train.test_gaussian_scientific_validation eval.test_gaussian_gauge_experiment
 python -m eval.gaussian_gauge_experiment --seeds 12 --output-dir ../validation_results/experiment_a
-python -m train.gaussian_validation --seeds 16 --jobs 7 --output-dir ../validation_run
+python -m train.gaussian_validation --seeds 16 --jobs 7 --legacy-gp --output-dir ../validation_run
 python eval/gaussian_energy_analysis.py \
   --input ../validation_run/energy_pool.csv.gz --output-dir ../validation_results/experiment_b
 python eval/gaussian_gp_analysis.py \

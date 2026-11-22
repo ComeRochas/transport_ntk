@@ -93,8 +93,8 @@ def statistics(values, draw_indices):
     return {"mean": float(values.mean()), "se": se, "ci95": interval}
 
 
-def acquisitions(batches, left, right):
-    for first, second in zip(batches[left], batches[right], strict=True):
+def acquisitions(left, right):
+    for first, second in zip(left, right, strict=True):
         step = [len(a & b) / len(a) for a, b in zip(first, second, strict=True)]
         a, b = set.union(*first), set.union(*second)
         yield [*step, len(a & b) / len(a)]
@@ -132,7 +132,7 @@ def summarize(metadata, budgets, curves, batches, locations, output):
                          "final_acquired_set_overlap"))
 
         def overlap(label, left, right):
-            values = np.asarray(list(acquisitions(batches, left, right)))
+            values = np.asarray(list(acquisitions(batches[left], batches[right])))
             for seed, row in zip(seeds, values, strict=True):
                 writer.writerow((label, seed, *row))
             return {
@@ -190,6 +190,45 @@ def summarize(metadata, budgets, curves, batches, locations, output):
         "gain_sensitivity": sensitivity,
         "mean_bias_contrast": compare(("original", "mean_with_bias"), ("original", "mean")),
     }
+
+
+def precision_impact(metadata, curves, batches, archived_metadata, archived_curves, archived_batches):
+    """Compare completed trajectories under the same settings and seed IDs."""
+    if (metadata["config"] != archived_metadata["config"]
+            or metadata["seeds"] != archived_metadata["seeds"]
+            or metadata["protocols"] != archived_metadata["protocols"]
+            or curves.keys() != archived_curves.keys()):
+        raise ValueError("Precision impact requires identical seeds, configuration, and protocols")
+    n_seeds = len(metadata["seeds"])
+    draws = np.random.default_rng(BOOTSTRAP_SEED).integers(
+        n_seeds, size=(N_BOOTSTRAP, n_seeds),
+    )
+    output = {}
+    for (protocol, arm), curve in curves.items():
+        policy = protocol, arm
+        previous = archived_curves[policy]
+        if not np.array_equal(curve[:, 0, :], previous[:, 0, :]):
+            raise ValueError(f"Historical starting loss differs for {policy}")
+        first_change = [
+            next((i for i, (a, b) in enumerate(zip(current, old, strict=True), start=1) if a != b), None)
+            for current, old in zip(batches[policy], archived_batches[policy], strict=True)
+        ]
+        overlap = np.asarray(list(acquisitions(batches[policy], archived_batches[policy])))
+        difference = curve - previous
+        output.setdefault(protocol, {})[arm] = {
+            "seeds_with_any_batch_membership_change": sum(i is not None for i in first_change),
+            "first_changed_acquisition_round_by_seed": dict(zip(metadata["seeds"], first_change, strict=True)),
+            "final_set_overlap": statistics(overlap[:, -1], draws),
+            "final_change_stable_minus_legacy": {
+                component: statistics(difference[:, -1, i], draws)
+                for i, component in enumerate(COMPONENTS)
+            },
+            "trajectory_change_stable_minus_legacy": {
+                component: statistics(difference[:, 1:, i].mean(axis=1), draws)
+                for i, component in enumerate(COMPONENTS)
+            },
+        }
+    return {"seeds": metadata["seeds"], "protocols": output}
 
 
 def plot_curves(path, budgets, curves):
@@ -270,12 +309,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--legacy-input-dir", type=Path, help="Compare against archived float32 trajectories")
     args = parser.parse_args()
     manifest = json.loads((args.input_dir / "manifest.json").read_text())
     budgets, curves, batches, locations = load_metrics(args.input_dir / "active_learning.csv", manifest)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     summary = summarize(manifest, budgets, curves, batches, locations, args.output_dir)
     (args.output_dir / "gp_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    if args.legacy_input_dir:
+        archived = json.loads((args.legacy_input_dir / "manifest.json").read_text())
+        _, old_curves, old_batches, _ = load_metrics(args.legacy_input_dir / "active_learning.csv", archived)
+        changes = precision_impact(manifest, curves, batches, archived, old_curves, old_batches)
+        (args.output_dir / "precision_impact.json").write_text(json.dumps(changes, indent=2) + "\n")
     plot_curves(args.output_dir / "learning_curves.png", budgets, curves)
     plot_contrasts(args.output_dir / "paired_contrasts.png", summary)
     plot_regions(args.output_dir / "spatial_acquisitions.png", locations,

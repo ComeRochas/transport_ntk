@@ -23,12 +23,13 @@ def load_configs(path="train/configs/configs_2d_gaussian.yml"):
     return [ExperimentConfig(**entry) for entry in raw]
 
 
-def run_seed(seed, *, config, strategies, verbose):
-    return {strategy: run_experiment(strategy, seed, config, verbose=verbose)
+def run_seed(seed, *, config, strategies, verbose, legacy_acquisition=False):
+    return {strategy: run_experiment(strategy, seed, config, verbose=verbose,
+                                     legacy_acquisition=legacy_acquisition)
             for strategy in strategies}
 
 
-def run_config(config, n_seeds, strategies, *, out_root=RESULTS_DIR, jobs=1):
+def run_config(config, n_seeds, strategies, *, out_root=RESULTS_DIR, jobs=1, legacy_acquisition=False):
     out_dir = os.path.join(out_root, config.name)
     os.makedirs(out_dir, exist_ok=True)
 
@@ -39,7 +40,8 @@ def run_config(config, n_seeds, strategies, *, out_root=RESULTS_DIR, jobs=1):
     all_indices = {s: [] for s in strategies}
 
     t0 = time.time()
-    run = partial(run_seed, config=config, strategies=strategies, verbose=jobs == 1)
+    run = partial(run_seed, config=config, strategies=strategies, verbose=jobs == 1,
+                  legacy_acquisition=legacy_acquisition)
 
     def collect(seed_results):
         for strategy in strategies:
@@ -73,6 +75,8 @@ if __name__ == "__main__":
     parser.add_argument("--device", help="Override the device in the YAML (e.g. cpu)")
     parser.add_argument("--threads", type=int, help="Number of PyTorch intra-op CPU threads")
     parser.add_argument("--jobs", type=int, default=1, help="Worker processes for independent CPU seeds")
+    parser.add_argument("--legacy-acquisition", action="store_true",
+                        help="Use the historical selector for reproducing archived results")
     parser.add_argument("--output-dir", default=RESULTS_DIR)
     args = parser.parse_args()
     if min(args.seeds, args.jobs) < 1 or (args.threads is not None and args.threads < 1):
@@ -93,4 +97,5 @@ if __name__ == "__main__":
             config = replace(config, device=args.device)
         if args.jobs > 1 and config.device != "cpu":
             parser.error("--jobs > 1 requires --device cpu")
-        run_config(config, args.seeds, args.strategies, out_root=args.output_dir, jobs=args.jobs)
+        run_config(config, args.seeds, args.strategies, out_root=args.output_dir, jobs=args.jobs,
+                   legacy_acquisition=args.legacy_acquisition)

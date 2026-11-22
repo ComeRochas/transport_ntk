@@ -18,7 +18,7 @@ python -m pip install torch numpy matplotlib pyyaml tqdm
 python -m unittest train.test_gaussian_projection
 python train/al_2d_gaussian.py --configs both_complex_b2 --seeds 30 \
   --strategies transport projected projected_canonical mean random \
-  --device cpu --threads 1 --jobs 4 --output-dir ../gaussian_projection_run
+  --device cpu --threads 1 --jobs 4 --legacy-acquisition --output-dir ../gaussian_projection_run
 python eval/gaussian_projection_summary.py \
   --results ../gaussian_projection_run/both_complex_b2/results.pt \
   --output-dir ../gaussian_projection_run/summary

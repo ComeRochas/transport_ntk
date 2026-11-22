@@ -26,8 +26,10 @@ import os, yaml
 from tqdm import tqdm
 
 if __package__:
+    from .gaussian_gp import acquisition_model, select_gaussian_gp_batch
     from .gaussian_projection import compute_projected_transport_kernel, softplus_slope
 else:
+    from gaussian_gp import acquisition_model, select_gaussian_gp_batch
     from gaussian_projection import compute_projected_transport_kernel, softplus_slope
 
 # ════════════════════════════════════════════════════════════════
@@ -388,7 +390,7 @@ def select_batch_cond_max_var(K, pool_indices, train_indices, batch_size, lam):
 def select_batch_min_total_var(K, pool_indices, train_indices, batch_size, lam,
                                *, hypothetical_lam=1.0):
     """
-    Greedy min total variance batch selection.
+    Historical greedy min total variance batch selection, for exact replay.
 
     Sequentially picks the point with the largest reduction in the sum of
     posterior variances. The default hypothetical noise reproduces the
@@ -489,7 +491,8 @@ def evaluate(model, x_test, mu_test, L_test):
 # EXPERIMENT LOOP
 # ════════════════════════════════════════════════════════════════
 
-def run_experiment(strategy: str, seed: int, config: ExperimentConfig, *, verbose=True):
+def run_experiment(strategy: str, seed: int, config: ExperimentConfig, *, verbose=True,
+                   legacy_acquisition=False):
     """
     Full AL loop for one strategy and seed.
 
@@ -533,25 +536,22 @@ def run_experiment(strategy: str, seed: int, config: ExperimentConfig, *, verbos
                 rng = np.random.RandomState(seed * 100 + r)
                 new = rng.choice(remaining, size=config.batch_size, replace=False).tolist()
             else:
-                # Compute kernel
+                kernel_model, kernel_inputs = (
+                    (model, x_pool) if legacy_acquisition else acquisition_model(model, x_pool)
+                )
                 if strategy == 'transport':
-                    K = compute_transport_kernel(model, x_pool)
+                    K = compute_transport_kernel(kernel_model, kernel_inputs)
                 elif strategy in {'projected', 'projected_canonical'}:
                     K = compute_projected_transport_kernel(
-                        model, x_pool, canonical=strategy == 'projected_canonical',
+                        kernel_model, kernel_inputs, canonical=strategy == 'projected_canonical',
                     )
                 elif strategy == 'mean':
-                    K = compute_mean_kernel(model, x_pool)
+                    K = compute_mean_kernel(kernel_model, kernel_inputs)
                 else:
                     raise ValueError(f"Unknown acquisition strategy: {strategy}")
 
-                new = select_batch_min_total_var(
-                    K,
-                    pool_indices=list(range(n_pool)),
-                    train_indices=train_indices,
-                    batch_size=config.batch_size,
-                    lam=config.lam,
-                )
+                selector = select_batch_min_total_var if legacy_acquisition else select_gaussian_gp_batch
+                new = selector(K, range(n_pool), train_indices, config.batch_size, config.lam)
 
             train_indices = train_indices + new
 

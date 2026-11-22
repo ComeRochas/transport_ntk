@@ -27,6 +27,7 @@ from .experiment import (
     train_model,
 )
 from .gaussian_projection import compute_projected_transport_kernel
+from .gaussian_gp import acquisition_model, select_gaussian_gp_batch
 
 
 PROTOCOLS = {
@@ -67,20 +68,24 @@ def gaussian_kernels(model, x):
     }
 
 
-def select(K, indices, batch_size, lam, protocol):
+def select(K, indices, batch_size, lam, protocol, *, stable_gp=False):
     normalized, coherent = PROTOCOLS[protocol]
     if normalized:
         scale = K.diagonal().mean()
         if not torch.isfinite(scale) or scale <= 0:
             raise ValueError("Mean kernel diagonal must be finite and positive")
         K = K / scale
+    if stable_gp:
+        return select_gaussian_gp_batch(
+            K, range(len(K)), indices, batch_size, lam, hypothetical_noise=lam if coherent else 1.0,
+        )
     return select_batch_min_total_var(
         K, range(len(K)), indices, batch_size, lam,
         hypothetical_lam=lam if coherent else 1.0,
     )
 
 
-def energy_rows(seed, round_idx, policy, points, indices, kernels, config):
+def energy_rows(seed, round_idx, policy, points, indices, kernels, config, *, stable_gp=False):
     diag = {arm: kernels[arm].diagonal() for arm in TRANSPORT_ARMS}
     torch.testing.assert_close(diag["projected"], diag["projected_canonical"])
     matched = {}
@@ -88,7 +93,7 @@ def energy_rows(seed, round_idx, policy, points, indices, kernels, config):
         scales = (diag["transport"] / diag[arm]).sqrt()
         matched[f"{arm}_matched_diag"] = kernels[arm] * torch.outer(scales, scales)
     batches = {
-        arm: set(select(K, indices, config.batch_size, config.lam, "original"))
+        arm: set(select(K, indices, config.batch_size, config.lam, "original", stable_gp=stable_gp))
         for arm, K in {**{arm: kernels[arm] for arm in TRANSPORT_ARMS}, **matched}.items()
     }
     mean_diag = kernels["mean_with_bias"].diagonal()
@@ -104,7 +109,7 @@ def energy_rows(seed, round_idx, policy, points, indices, kernels, config):
     ]
 
 
-def run_seed(seed, *, config):
+def run_seed(seed, *, config, stable_gp=False):
     """Reuse fits only when the ordered labels and round RNG state are identical."""
     torch.manual_seed(seed)
     x_pool, x_test, initial_indices = make_grids(config, torch.device("cpu"))
@@ -130,7 +135,9 @@ def run_seed(seed, *, config):
                 if next_rng is not None and not torch.equal(state, next_rng):
                     raise RuntimeError("Training RNG diverged between policies")
                 next_rng = state
-                cache[indices] = (evaluate(model, x_test, mu_test, L_test), gaussian_kernels(model, x_pool))
+                error = evaluate(model, x_test, mu_test, L_test)
+                kernel_model, kernel_inputs = acquisition_model(model, x_pool) if stable_gp else (model, x_pool)
+                cache[indices] = (error, gaussian_kernels(kernel_model, kernel_inputs))
                 n_fits += 1
             error, kernels = cache[indices]
             acquired = indices[-config.batch_size:] if round_idx else indices
@@ -140,7 +147,8 @@ def run_seed(seed, *, config):
                 error["covariance"], list(acquired), x1, x2,
             ])
             if protocol == "original" and arm in TRANSPORT_ARMS:
-                energy.extend(energy_rows(seed, round_idx, arm, points, indices, kernels, config))
+                energy.extend(energy_rows(seed, round_idx, arm, points, indices, kernels, config,
+                                          stable_gp=stable_gp))
             if round_idx == config.n_rounds:
                 continue
             if arm == "random":
@@ -148,7 +156,8 @@ def run_seed(seed, *, config):
                 remaining = list(set(range(len(points))) - set(indices))
                 batch = rng.choice(remaining, size=config.batch_size, replace=False).tolist()
             else:
-                batch = select(kernels[arm], indices, config.batch_size, config.lam, protocol)
+                batch = select(kernels[arm], indices, config.batch_size, config.lam, protocol,
+                               stable_gp=stable_gp)
             if len(batch) != config.batch_size or set(batch).intersection(indices):
                 raise RuntimeError("Acquisition returned an invalid batch")
             histories[protocol, arm] = (*indices, *batch)
@@ -157,8 +166,8 @@ def run_seed(seed, *, config):
     return {"seed": seed, "n_fits": n_fits, "metrics": metrics, "energy": energy}
 
 
-def write_part(seed, *, config, parts):
-    data = run_seed(seed, config=config)
+def write_part(seed, *, config, parts, stable_gp=False):
+    data = run_seed(seed, config=config, stable_gp=stable_gp)
     target = parts / f"{seed:04d}.json.gz"
     temporary = target.with_suffix(".tmp")
     with gzip.open(temporary, "wt", encoding="utf-8") as out:
@@ -190,6 +199,12 @@ def main():
     parser.add_argument("--seeds", type=int, default=16)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--output-dir", type=Path, required=True)
+    precision = parser.add_mutually_exclusive_group()
+    precision.add_argument("--stable-gp", dest="stable_gp", action="store_true",
+                           help="Use the float64 selector (default)")
+    precision.add_argument("--legacy-gp", dest="stable_gp", action="store_false",
+                           help="Reproduce the archived float32 selector")
+    parser.set_defaults(stable_gp=True)
     parser.add_argument("--smoke-steps", type=int, help="Override steps for a smoke run only")
     args = parser.parse_args()
     if args.seeds < 1 or args.jobs < 1 or (args.smoke_steps is not None and args.smoke_steps < 1):
@@ -211,12 +226,14 @@ def main():
         "environment": {"python": platform.python_version(), "torch": torch.__version__,
                         "numpy": np.__version__, "architecture": platform.machine(), "torch_threads": 1},
     }
+    if args.stable_gp:
+        metadata["selector"] = "native_float64_fresh_cholesky"
     manifest = output / "manifest.json"
     if manifest.exists() and json.loads(manifest.read_text()) != metadata:
         parser.error("Output contains a different run configuration")
     manifest.write_text(json.dumps(metadata, indent=2) + "\n")
     pending = [i for i in seeds if not (parts / f"{i:04d}.json.gz").exists()]
-    write = partial(write_part, config=config, parts=parts)
+    write = partial(write_part, config=config, parts=parts, stable_gp=args.stable_gp)
     start = time.monotonic()
     torch.set_num_threads(1)
     if args.jobs == 1 or len(pending) <= 1:

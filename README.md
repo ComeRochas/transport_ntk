@@ -94,6 +94,8 @@ The [Wasserstein projection experiment](docs/gaussian_projection.md) compares
 two projected kernels with the original 2D-Gaussian baselines.
 The [mechanism and GP ablation report](results/gaussian_2d/validation/report.md)
 evaluates latent-rotation invariance, tangent energy and selector sensitivity.
+The [scientific synthesis](results/gaussian_2d/synthesis/report.md) audits
+the historical selector in float64 and reports the corrected ablations.
 
 ## Citation
 

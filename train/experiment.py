@@ -26,9 +26,9 @@ import os, yaml
 from tqdm import tqdm
 
 if __package__:
-    from .gaussian_projection import compute_projected_transport_kernel
+    from .gaussian_projection import compute_projected_transport_kernel, softplus_slope
 else:
-    from gaussian_projection import compute_projected_transport_kernel
+    from gaussian_projection import compute_projected_transport_kernel, softplus_slope
 
 # ════════════════════════════════════════════════════════════════
 # CONFIG
@@ -314,7 +314,7 @@ def compute_transport_kernel(model, x):
     """
     Closed-form transport sensitivity kernel (Eq. closed-kernel).
 
-    k(x, x') = 2·h(x)^T h(x')
+    k(x, x') = 2·(h(x)^T h(x') + 1)
              + (1 + σ'(a¹(x))σ'(a¹(x')) + σ'(a³(x))σ'(a³(x'))) · (g(x)^T g(x') + 1)
 
     Args:
@@ -327,8 +327,8 @@ def compute_transport_kernel(model, x):
     g = model.cov_net.get_feature_embeddings(x)      # (N, D)
     raw = model.cov_net.get_pre_activations(x)       # (N, 3)
 
-    s1 = torch.sigmoid(raw[:, 0])              # σ'(a¹)
-    s3 = torch.sigmoid(raw[:, 2])              # σ'(a³)
+    s1 = softplus_slope(raw[:, 0])
+    s3 = softplus_slope(raw[:, 2])
 
     K_mean = 2.0 * (h @ h.t()) + 2
     cov_scalar = 1.0 + torch.outer(s1, s1) + torch.outer(s3, s3)
@@ -385,12 +385,14 @@ def select_batch_cond_max_var(K, pool_indices, train_indices, batch_size, lam):
     return selected[len(train_indices):]
 
 
-def select_batch_min_total_var(K, pool_indices, train_indices, batch_size, lam):
+def select_batch_min_total_var(K, pool_indices, train_indices, batch_size, lam,
+                               *, hypothetical_lam=1.0):
     """
     Greedy min total variance batch selection.
 
-    Sequentially picks the pool point with highest posterior variance,
-    adds it to the selected set, and repeats.
+    Sequentially picks the point with the largest reduction in the sum of
+    posterior variances. The default hypothetical noise reproduces the
+    released benchmark. Pass hypothetical_lam=lam for one GP noise level.
 
     K: (M, M) kernel over pool points, precomputed.
     Returns: list of newly selected pool indices.
@@ -400,8 +402,6 @@ def select_batch_min_total_var(K, pool_indices, train_indices, batch_size, lam):
     K_S = K[:, S_idx]
     Kp = K[S_idx,:][:,S_idx] + lam * torch.eye(len(S_idx), device=K.device)
         
-    k_diag = K.diag()
-
     L_chol = torch.linalg.cholesky(Kp)
     L_inv = torch.linalg.inv(L_chol)
     inv_mat = L_inv.T @ L_inv
@@ -418,7 +418,7 @@ def select_batch_min_total_var(K, pool_indices, train_indices, batch_size, lam):
         R_idx = torch.tensor(remaining, dtype=torch.long, device=K.device)
 
         col_norms_sq = torch.sum(K_curr * K_curr, axis=0)
-        diag_plus_sigma = torch.diag(K_curr) + 1
+        diag_plus_sigma = torch.diag(K_curr) + hypothetical_lam
         scores = (col_norms_sq / diag_plus_sigma)[R_idx]
         best_local = torch.argmax(scores).item()
         j_star = R_idx[best_local]

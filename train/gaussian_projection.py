@@ -4,6 +4,11 @@ import torch
 import torch.nn.functional as F
 
 
+def softplus_slope(raw):
+    """Differentiate PyTorch's default softplus, including its linear branch."""
+    return torch.where(raw > 20, torch.ones_like(raw), raw.sigmoid())
+
+
 def project_factor_directions(factor, directions, *, canonical=False):
     """Return A M (or A Σ¹ᐟ²) for each factor direction dM.
 
@@ -47,7 +52,7 @@ def compute_projected_transport_kernel(model, x, *, canonical=False):
     factor[:, 1, 1] = F.softplus(raw[:, 2])
 
     slopes = torch.stack(
-        (raw[:, 0].sigmoid(), torch.ones_like(raw[:, 1]), raw[:, 2].sigmoid()), dim=1,
+        (softplus_slope(raw[:, 0]), torch.ones_like(raw[:, 1]), softplus_slope(raw[:, 2])), dim=1,
     )
     directions = factor.new_zeros((len(x), 3, 2, 2))
     directions[:, 0, 0, 0] = slopes[:, 0]

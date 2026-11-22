@@ -92,6 +92,8 @@ The 2D-Gaussian study is separate and self-contained:
 
 The [Wasserstein projection experiment](docs/gaussian_projection.md) compares
 two projected kernels with the original 2D-Gaussian baselines.
+The [mechanism and GP ablation report](results/gaussian_2d/validation/report.md)
+evaluates latent-rotation invariance, tangent energy and selector sensitivity.
 
 ## Citation
 
